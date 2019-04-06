@@ -1,0 +1,10 @@
+@import './utils.scss';
+
+.Header {
+  .wrapper {
+    background: $blue;
+    width: 100%;
+    height: 100px;
+    position: relative;
+  }
+}
