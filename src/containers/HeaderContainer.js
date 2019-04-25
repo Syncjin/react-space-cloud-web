@@ -3,11 +3,24 @@ import Header from '../components/Header/Header';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as headerActions from '../store/modules/header';
+import { HeaderActions } from '../store/actionCreators';
 
 class HeaderContainer extends Component {
+  
+  searchClick = (text) => {
+    HeaderActions.searchClick(text);
+    HeaderActions.printMessage();
+  }
+
+  menuClick = (text) => {
+    HeaderActions.menuClick(text);
+    HeaderActions.printMessage();
+  }
+  
   render() {
+    const { searchClick, menuClick } = this;
     return (
-      <Header>
+      <Header searchClick={searchClick} menuClick={menuClick}>
       </Header>
       
     )
@@ -15,13 +28,8 @@ class HeaderContainer extends Component {
 }
 
 export default connect(
-  (state) => ({
-    // input: todo.get('input'),
-    // todos: todo.get('todos')
-
-    // Record를 이용할 때
-    // input: todo.input,
-    // todos: todo.todos
+  ({header}) => ({
+    message: header.message
   }),
   (dispatch) => ({
     HeaderActions: bindActionCreators(headerActions, dispatch)

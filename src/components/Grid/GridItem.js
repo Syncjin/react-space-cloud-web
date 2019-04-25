@@ -5,23 +5,7 @@ import moment from 'moment';
 import * as Md from 'react-icons/md';
 
 
-const Wrapper = styled.div`
-  height: auto;
-  background: black;
-  overflow: hidden;
-  position:relative;
-  cursor: pointer;
-  border-radius: 15px;
-  transition: all 0.5s;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
-  &:hover {
-    box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
-  }
-  &: hover img{
-    transform: scale(1.2);
-  }
-  
-`;
+
 // ${props => props.rowSpan && css`grid-row-end: span ${props.rowSpan};`}
 
 const DateCard = styled.div`
@@ -71,7 +55,6 @@ const InfoCard = styled.div`
   transition: all 0.3s;
   z-index:1;
   background: white;
-
 `;
 
 const ImageBlackContainer = styled.div`
@@ -101,23 +84,48 @@ const ImageContainer = styled.div`
   width: 100%;
   height: auto;
   position:relative;
-  &: hover ${ImageBlackContainer} {
+  overflow: hidden;
+  &:hover ${ImageBlackContainer} {
     background: rgba(0,0,0,0.5);
   }
-  &: hover ${IconInfo} {
+  &:hover ${IconInfo} {
     display: flex;
   }
   img {
     width: 100%;
     height: auto;
     display: block;
-    transition: all 0.5s;
+    transition: all 0.3s;
   }
+  
+`;
+const Wrapper = styled.div`
+  height: auto;
+  // background: black;
+  overflow: hidden;
+  position:relative;
+  cursor: pointer;
+  border-radius: 15px;
+  -webkit-border-radius: 15px;
+  transition: boxshadow 0.5s;
+  -webkit-transform: translate3d(0, 0, 0);
+  -webkit-backface-visibility: hidden;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+  &:hover {
+    box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+  }
+  &:hover ${ImageContainer} img {
+    transform: scale(1.2);
+  }
+
+  ${props => props.rowSpan && 
+    css`grid-row-end: ${props.rowSpan};`
+  }
+  
 `;
 
-
-
-
+const ContentDiv = styled.div`
+`;
 
 class GridItem extends Component {
  
@@ -125,6 +133,7 @@ class GridItem extends Component {
     super(props);
     this.myGridItem = React.createRef();
     this.myGridItemContent = React.createRef();
+    this.resizeEnd = null;
     this.state = {
       rowSpan: null,
       getBoundHeight: null,
@@ -133,11 +142,12 @@ class GridItem extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState){
-    if(this.state.rowSpan !== nextState.rowSpan){
-      this.getRowSpan();
-      return true;
-    }
-    return false;
+    // if(this.state.rowSpan !== nextState.rowSpan){
+    //   this.getRowSpan();
+    //   return true;
+    // }
+    // console.log('item should')
+    return true;
   }
 
   dateReturn = date => {
@@ -172,8 +182,9 @@ class GridItem extends Component {
           <span className="day">{this.dateReturn(date).day}</span>
           <span className="month">{this.dateReturn(date).month}</span>
           <span className="year">{this.dateReturn(date).year}</span>
+          <span>{this.props.num}</span>
         </DateCard>
-        <div ref={this.myGridItemContent}>
+        <ContentDiv ref={this.myGridItemContent}>
           <ImageContainer>
             <ImageBlackContainer>
               <IconInfo>
@@ -196,7 +207,7 @@ class GridItem extends Component {
               <h3 className="title">{title}</h3>
             </div>
           </InfoCard>
-        </div>
+        </ContentDiv>
       </Wrapper>
     )
   }
@@ -208,20 +219,20 @@ class GridItem extends Component {
   }
 
   getRowSpan = () => {
+    console.log('getRowSpan')
     const {rowGap, rowHeight} = this.props;
     const {getBoundHeight} = this.state;
     const rowSpan = Math.floor((rowGap + getBoundHeight)/(rowHeight + rowGap));
     // console.log(`rowGap, ${rowGap} rowHeight, ${rowHeight} rowSpan, ${rowSpan} getBoundHeight, ${getBoundHeight}`)
     this.setState({
-      rowSpan
-    }, () => {
-      this.myGridItem.current.style.gridRowEnd = "span " + this.state.rowSpan;
-      // console.log(this.myGridItem.current.style.gridRowEnd)
+      rowSpan: "span " + rowSpan
     })
   }
 
   componentDidMount(){
+    
     window.addEventListener('resize', this.updateDimensions);
+  
   }
 
   componentWillUnmount(){
@@ -229,9 +240,36 @@ class GridItem extends Component {
   }
 
   updateDimensions = () =>{
-    this.getBound();
+    if(this.resizeEnd){
+      clearTimeout(this.resizeEnd);
+    }
+    this.resizeEnd = setTimeout(() => {
+      // console.log('resize end!')
+      this.getBound();
+    }, 1000);
   }
 
+
+  /* 
+  $(document).ready(function(){
+  
+  var $win = $(window);
+  var $left_panel = $('.left-panel');
+  var $right_panel = $('.right-panel');
+  
+  function display_info($div) {
+    $div.append($win.width() + ' x ' + $win.height() +  '<br>');
+  }
+                
+  $(window).on('resize', function(){
+    display_info($left_panel);
+  });
+  
+  $(window).on('resize', _.debounce(function() {
+    display_info($right_panel);
+  }, 400));
+});
+  */
 }
 
 export default GridItem;

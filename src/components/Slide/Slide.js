@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
 import styled, {css} from 'styled-components';
-import { device } from '../SizeCheck';
-import { blue, ActBlue } from '../../styles/utils';
-import { BrowserRouter as Router , Route, Link} from 'react-router-dom';
+// import { device } from '../SizeCheck';
+// import { blue, ActBlue } from '../../styles/utils';
+// import { BrowserRouter as Router , Route, Link} from 'react-router-dom';
 import SlideNavigator from './SlideNavigator';
 import SlideItem from './SlideItem';
 
-import axios from 'axios';
+// import axios from 'axios';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -14,6 +14,22 @@ const Wrapper = styled.div`
   background: black;
   position: relative;
 `;
+
+// const Slide = ({
+//   handleNext, handlePrev, responseList, loading, level
+// }) => {
+//   console.log('slide', this.props)
+//     // const { responseList, loading, level} = this.state;
+//     // const {handleNext, handlePrev} = this;
+//   return (
+//     <Wrapper>
+//       <SlideNavigator onNext={handleNext} onPrev={handlePrev} />
+//       <SlideItem responseList={responseList} loading={loading} level={level}/>
+//     </Wrapper>
+//   )
+// }
+
+// export default Slide;
 
 class Slide extends Component {
  
@@ -45,13 +61,13 @@ class Slide extends Component {
   }
 
   autoNext = () => {
-    this.setAuto = setInterval(() => {
-      if(this.state.level === this.state.responseCnt - 1){
-        this.setState({level: 0})
-      } else {
-        this.setState({level: this.state.level + 1})
-      }
-    }, 3000);
+    // this.setAuto = setInterval(() => {
+    //   if(this.state.level === this.state.responseCnt - 1){
+    //     this.setState({level: 0})
+    //   } else {
+    //     this.setState({level: this.state.level + 1})
+    //   }
+    // }, 3000);
   }
 
   handlePrev = () => {
@@ -67,22 +83,28 @@ class Slide extends Component {
   }
 
   componentDidMount(){
-    console.log(this.state)
-    this.getApi();
-    this.autoNext();
+    // console.log(this.state)
+    // this.getApi();
+    // this.autoNext();
+    console.log('didmount',this)
+    console.log(this.props)
+    this.props.getApi();
+    this.props.autoNext(this)
   }
 
   componentWillUnmount(){
-    clearInterval(this.setAuto);
+    // clearInterval(this.setAuto);
+    this.props.autoNextClear(this);
   }
 
   render() {
-    const { responseList, loading, level} = this.state;
-    const {handleNext, handlePrev} = this;
+    console.log('slide', this.props)
+    // const { responseList} = this.state;
+    const { handleNext, handlePrev, config } = this.props;
     return (
       <Wrapper>
         <SlideNavigator onNext={handleNext} onPrev={handlePrev} />
-        <SlideItem responseList={responseList} loading={loading} level={level}/>
+        <SlideItem responseList={config.responseList} loading={config.loading} level={config.level}/>
       </Wrapper>
     )
   }

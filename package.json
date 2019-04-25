@@ -15,14 +15,18 @@
     "react-router-dom": "^5.0.0",
     "react-scripts": "2.1.8",
     "react-spinners-kit": "^1.9.0",
+    "react-virtualized": "^9.21.0",
+    "react-virtualized-image-measurer": "^0.4.0",
     "redux": "^4.0.1",
     "redux-actions": "^2.6.5",
-    "styled-components": "^4.2.0"
+    "redux-saga": "^1.0.2",
+    "styled-components": "^4.2.0",
+    "tape": "^4.10.1"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "PORT=8080 react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "tape sagas/sagas.spec.js",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

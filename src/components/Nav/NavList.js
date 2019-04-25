@@ -66,29 +66,9 @@ const LinkA = styled(Link)`
 
 
 class NavList extends Component {
-  
-  state = {
-    item: [
-      {text: '추천공간/리뷰', active: false},
-      {text: '써 본 사람', active: false},
-      {text: '기획전', active: false},
-      {text: '공간등록하기', active: false},
-    ]
-  }
-
-  renderMain = (num) =>{
-    
-    this.setState({
-      item: this.state.item.map((o, i)=> {
-        o.active = num === i ? true : false;
-        return o;
-      })
-    })
-
-  }
  
   render() {
-    const {item} = this.state;
+    const {item, hoverTrue} = this.props;
     return (
       <Wrapper>
         {item.map((o,i) => {
@@ -96,7 +76,8 @@ class NavList extends Component {
             <Item key={i}>
               {i === 3 ? 
                 (<LinkA to="/newLink" active={o.active ? 1 : 0}>{o.text}</LinkA>) : 
-                (<A active={o.active ? 1 : 0} onClick={(e) => {this.renderMain(i)}}>{o.text}</A>)
+                // (<A active={o.active ? 1 : 0} onClick={(e) => {this.renderMain(i)}}>{o.text}</A>)
+                (<A active={o.active ? 1 : 0} onClick={(e) => {hoverTrue(i)}}>{o.text}</A>)
               }
               
             </Item>

@@ -48,7 +48,7 @@ class SlideItem extends Component {
       }
       return (
         <Item key={i} transWidth={width * (i - level)}>
-          <img src={o.urls.regular} onClick={() => window.open(o.urls.raw)}alt="random" />
+          <img src={o.urls.small} onClick={() => window.open(o.urls.small)} alt={o.alt_description} />
         </Item>
       )
     })

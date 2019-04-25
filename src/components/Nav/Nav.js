@@ -20,12 +20,11 @@ const NavWrapper = styled.div`
   }
 `;
 
-const Nav = () => {
-  
+const Nav = ({hoverTrue, item}) => {
   
   return (
     <NavWrapper>
-      <NavList />
+      <NavList hoverTrue={hoverTrue} item={item}/>
     </NavWrapper>
   )
 }

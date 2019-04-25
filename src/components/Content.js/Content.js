@@ -2,14 +2,14 @@ import React from 'react';
 import styled, {css} from 'styled-components';
 import { device } from '../SizeCheck';
 import { BrowserRouter as Router , Route, Link} from 'react-router-dom';
-import Slide from '../Slide.js';
+import SlideContainer from '../../containers/SlideContainer'
 import Page from './Page';
 
 const ContentWrapper = styled.div`
   display: block;
   width: 100%;
   height: auto;
-  background: green;
+  background: #fff;
   poisition: relative;
   h2 { margin: 0; }
   padding-top: 200px;
@@ -21,10 +21,18 @@ const ContentWrapper = styled.div`
   }
 `;
 
-
+const TestDiv = styled.div`
+  width: 50px;
+  height: 50px;
+  background: red;
+  border-radius: 15px;
+  &:hover {
+    background: blue;
+  }
+`;
 
 const Test = () => {
-  return <h2>TEST</h2>
+  return <SlideContainer />
 }
 
 const Index = () => {
@@ -36,9 +44,9 @@ const Content = () => {
   
   return (
     <ContentWrapper>
-      <Slide />
+      {/* <SlideContainer /> */}
       <Route path="/" exact component={Index} />
-      <Route path="/test" component={Test} />
+      <Route path="/newLink" component={Test} />
     </ContentWrapper>
   )
 }

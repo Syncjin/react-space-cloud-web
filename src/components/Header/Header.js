@@ -11,13 +11,6 @@ const HeaderWrapper = styled.div`
   position: relative;
 `;
 
-const MdSearchClick = () => {
-  console.log('MdSearch click')
-}
-const MeMenuClick = () => {
-  console.log('MeMenu click')
-}
-
 const IconWrapper = styled.div`
   width: 200px;
   height: 100px;
@@ -36,20 +29,42 @@ const TableCellWrapper = styled.div`
   vertical-align: middle;
 `;
 
-const Header = () => {
+const Header = ({ searchClick, menuClick }) => {
   return (
     <HeaderWrapper>
       <Logo />
       <IconWrapper>
         <TableWrapper>
           <TableCellWrapper>
-            <Icon icon={'MdSearch'} onclick={MdSearchClick}/>
-            <Icon icon={'MdMenu'} onclick={MeMenuClick}/>
+            <Icon icon={'MdSearch'} onclick={(e) => {searchClick('search click')}}/>
+            <Icon icon={'MdMenu'} onclick={(e) => {menuClick('menu click')}}/>
           </TableCellWrapper>
         </TableWrapper>
       </IconWrapper>
     </HeaderWrapper>
   )
 }
+
+// class Header extends Component {
+//   searchClick = () => {
+//     this.props.searchClick();
+//   }
+//   render(){
+//     const { searchClick, menuClick } = this.props
+//     return (
+//       <HeaderWrapper>
+//         <Logo />
+//         <IconWrapper>
+//           <TableWrapper>
+//             <TableCellWrapper>
+//               <Icon icon={'MdSearch'} onclick={searchClick}/>
+//               <Icon icon={'MdMenu'} onclick={menuClick}/>
+//             </TableCellWrapper>
+//           </TableWrapper>
+//         </IconWrapper>
+//       </HeaderWrapper>
+//     )
+//   }
+// }
 
 export default Header;
