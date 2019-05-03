@@ -100,7 +100,8 @@ class Page extends Component {
 
   componentDidMount(){
     window.addEventListener('scroll', this.handleOnScroll);
-    this.getApi('didmount');
+    // this.getApi('didmount');
+    this.props.test();
   };
 
   handleOnScroll = () => {
@@ -124,10 +125,12 @@ class Page extends Component {
         if (scrolledToBottom && this.state.more && !this.state.loading) {
           // this.querySearchResult();
           // console.log('bottom scroll', scrollTop, scrollHeight, clientHeight)
-          this.getApi('scrollbottom', 'next');
+          // this.getApi('scrollbottom', 'next');
+          this.props.test()
+
         }
         if(scrollTop < 600 && this.state.more && !this.state.loading){
-          this.getApi('scrollbottom', 'prev');
+          // this.getApi('scrollbottom', 'prev');
         }
       }, 250)
     }
@@ -162,11 +165,13 @@ class Page extends Component {
     }
   }
 
+
   render() {
-    const {responseList, more} = this.state;
-    console.log('render page', responseList)
+    const { more} = this.state;
+    // console.log('render page', responseList)
     return (
       <Wrapper>
+        {/* <div style={{width: 300, height: 300, background: 'red'}} onClick={this.props.test}></div> */}
         {/* <Grid data={responseList} num={this.state.responseItemCnt}/>
         {more ? this.makeLoading() : (<MoreBox>
           <button onClick={() => { this.setState({more: true}) }}>more</button>

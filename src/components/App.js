@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import HeaderContainer from '../containers/HeaderContainer';
 import Nav from './Nav';
-import Content from './Content.js';
+import Content from './Content';
 import { BrowserRouter as Router , Route, Link} from 'react-router-dom';
 import TestContainer from '../containers/TestContainer';
 import styled, {css} from 'styled-components';

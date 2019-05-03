@@ -4,6 +4,7 @@ import { device } from '../SizeCheck';
 import { BrowserRouter as Router , Route, Link} from 'react-router-dom';
 import SlideContainer from '../../containers/SlideContainer'
 import Page from './Page';
+import PageContainer from '../../containers/PageContainer';
 
 const ContentWrapper = styled.div`
   display: block;
@@ -36,7 +37,7 @@ const Test = () => {
 }
 
 const Index = () => {
-  return <Page />
+  return <PageContainer />
 }
 
 const Content = () => {

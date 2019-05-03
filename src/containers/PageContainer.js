@@ -1,23 +1,21 @@
 import React, { Component } from 'react';
-import MyMasonry from '../components/Masonry';
+// import MyMasonry from '../components/Masonry';
+import Page from '../components/Content/Page';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as masonryActions from '../store/modules/masonry';
 import { MasonryActions } from '../store/actionCreators';
 
-class MasonryContainer extends Component {
+class PageContainer extends Component {
   
-  getRequested = () => {
+  test = () => {
     MasonryActions.getRequested();
   }
-
+  
   render() {
-    console.log('masonryContainer', this.props)
-    const { dataSet, config } = this.props;
+    console.log('page container', this.props)
     return (
-      <MyMasonry dataSet={dataSet} config={config}
-        getRequested={this.getRequested}
-      />
+      <Page test={this.test}/>
       
     )
   }
@@ -25,8 +23,8 @@ class MasonryContainer extends Component {
 
 export default connect(
   ({masonry}) => ({
-    dataSet: masonry.dataSet,
-    config: masonry.config
+    // dataSet: masonry.dataSet,
+    // config: masonry.config
     // input: todo.get('input'),
     // todos: todo.get('todos')
 
@@ -37,4 +35,4 @@ export default connect(
   (dispatch) => ({
     MasonryActions: bindActionCreators(masonryActions, dispatch)
   })
-)(MasonryContainer);
+)(PageContainer);
