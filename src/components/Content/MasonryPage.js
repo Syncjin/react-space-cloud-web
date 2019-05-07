@@ -1,9 +1,5 @@
 import React, {Component} from 'react';
 import styled, {css} from 'styled-components';
-import { device } from '../SizeCheck';
-import { blue, ActBlue } from '../../styles/utils';
-import { BrowserRouter as Router , Route, Link} from 'react-router-dom';
-import Grid from '../Grid/Grid';
 import axios from 'axios';
 import { DominoSpinner } from 'react-spinners-kit';
 import MasonryContainer from '../../containers/MasonryContainer';
@@ -43,26 +39,30 @@ const MasonryWrapper = styled.div`
   padding: 10px;
 `;
 
-class Page extends Component {
+class MasonryPage extends Component {
  
-  state = {
-    loading: false,
-    responseList: [],
-    responseItemCnt: 0,
-    more: false
-  }
+  // state = {
+  //   loading: false,
+  //   responseList: [],
+  //   responseItemCnt: 0,
+  //   more: false
+  // }
 
   constructor(props){
+    console.log('masornypage')
     super(props);
     this.scrollThrottling = null;
   }
 
-  shouldComponentUpdate(nextProps, nextState){
-    console.log('should');
-    // console.log(nextProps, nextState)
-    
-    return true;
-  }
+  // shouldComponentUpdate(nextProps, nextState){
+  //   console.log('should');
+  //   console.log(nextProps, nextState);
+
+  //   if(!nextProps.loading){
+  //     return false;
+  //   }
+  //   return true;
+  // }
 
   
   getApi = async (text, updown) => {
@@ -100,8 +100,7 @@ class Page extends Component {
 
   componentDidMount(){
     window.addEventListener('scroll', this.handleOnScroll);
-    // this.getApi('didmount');
-    this.props.test();
+    this.props.getRequested();
   };
 
   handleOnScroll = () => {
@@ -115,23 +114,12 @@ class Page extends Component {
         
         let clientHeight = document.documentElement.clientHeight || window.innerHeight;
         let scrolledToBottom = Math.ceil(scrollTop + clientHeight) >= scrollHeight;
-        if(this.state.prevScrollTop < scrollTop){
-
-        }
-        this.setState({
-          prevScrollTop: scrollTop
-        })
+        
         console.log(scrollTop, scrollHeight, clientHeight, scrolledToBottom);
-        if (scrolledToBottom && this.state.more && !this.state.loading) {
-          // this.querySearchResult();
-          // console.log('bottom scroll', scrollTop, scrollHeight, clientHeight)
-          // this.getApi('scrollbottom', 'next');
-          this.props.test()
-
+        if (scrolledToBottom && this.props.more && !this.props.loading) {
+          this.props.getRequested();
         }
-        if(scrollTop < 600 && this.state.more && !this.state.loading){
-          // this.getApi('scrollbottom', 'prev');
-        }
+        
       }, 250)
     }
     
@@ -150,25 +138,26 @@ class Page extends Component {
   //   // this.setState({requestSent: true});
   // }
 
-  makeLoading = () => {
-    if(this.state.loading){
+  makeLoading = loading => {
+    console.log('make loading', loading)
+    if(loading){
       return (
-      <RequestLoading>  
+      <RequestLoading>
         <DominoSpinner
           size={300}
           color="#0E3A53"
-          loading={this.state.loading}
+          loading={loading}
         />
       </RequestLoading>);
     } else {
       return null
     }
+
   }
 
 
   render() {
-    const { more} = this.state;
-    // console.log('render page', responseList)
+    const { more, moreTrue, loading } = this.props;
     return (
       <Wrapper>
         {/* <div style={{width: 300, height: 300, background: 'red'}} onClick={this.props.test}></div> */}
@@ -179,8 +168,8 @@ class Page extends Component {
         <MasonryWrapper>
           <MasonryContainer/>
         </MasonryWrapper>
-        {more ? this.makeLoading() : (<MoreBox>
-          <button onClick={() => { this.setState({more: true}) }}>more</button>
+        {more ? this.makeLoading(loading) : (<MoreBox>
+          <button onClick={moreTrue}>more</button>
         </MoreBox>)}
       </Wrapper>
     )
@@ -188,4 +177,4 @@ class Page extends Component {
 
 }
 
-export default Page;
+export default MasonryPage;

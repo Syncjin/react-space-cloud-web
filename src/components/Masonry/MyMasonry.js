@@ -9,10 +9,10 @@ class MyMasonry extends Component {
   constructor(props) {
     super(props);
     this._columnCount = 3;
-    this._columnWidth = 250;
+    this._columnWidth = 270;
     this._defaultWidth = this._columnWidth;
     this._defaultHeight = 250;
-    // this._width = 0;
+    this._spacer = 0;
 
     this._cache = new CellMeasurerCache({
       defaultHeight: this._defaultHeight,
@@ -24,7 +24,7 @@ class MyMasonry extends Component {
       cellMeasurerCache: this._cache,
       columnCount: this._columnCount,
       columnWidth: this._columnWidth,
-      spacer: 20
+      spacer: this._spacer
     };
 
     this._cellPositioner = createMasonryCellPositioner(this._cellPositionerConfig);
@@ -39,7 +39,6 @@ class MyMasonry extends Component {
 
   _masonryKeyMapper = (index) => {
     // console.log('masonry keymapper', index)
-    console.log(index)
     return index;
   }
 
@@ -52,8 +51,8 @@ class MyMasonry extends Component {
       return (
         <CellMeasurer cache={this._cache} index={index} key={item.key} parent={parent}>
         <div style={style}>
-          <div>{index}</div>
-          <div>{item.key}</div>
+          {/* <div>{index}</div>
+          <div>{item.key}</div> */}
           <MasonryItem CellHeight={height} CellWidth={this._columnWidth} item={item} num={index}/>
         </div>
         </CellMeasurer>
@@ -75,6 +74,7 @@ class MyMasonry extends Component {
         width={width}
         // keyMapper={this._masonryKeyMapper}
         ref={setRef}
+        style={{margin: '0 auto', outline: 'none'}}
       />
     );
   }
@@ -88,7 +88,7 @@ class MyMasonry extends Component {
   }
 
   componentDidUpdate(){
-    console.log('updqte', this.props.dataSet)
+    console.log('update', this.props.dataSet)
   }
 
   setMasonry = node => (this.masonryRef = node);
@@ -96,13 +96,19 @@ class MyMasonry extends Component {
   _onResize = ({width}) => {
     // console.log('onresize', width)
     this._calculateColumnCount(width);
-    // console.log('column', this._columnCount)
+    // // console.log('column', this._columnCount)
     this._resetCellPositioner();
     this.masonryRef.recomputeCellPositions();
   }
 
+  _sizeCheck = width => {
+    // console.log('width', width)
+    this._calculateColumnCount(width);
+    return this._calculateMarsonryWidth();
+  }
+
   _resetCellPositioner = () => {
-    console.log('_resetCellPositioner', this._cellPositionerConfig)
+    // console.log('_resetCellPositioner', this._cellPositionerConfig)
     this._cellPositionerConfigSet()
     this._cellPositioner.reset(this._cellPositionerConfig);
   }
@@ -112,7 +118,7 @@ class MyMasonry extends Component {
       cellMeasurerCache: this._cache,
       columnCount: this._columnCount,
       columnWidth: this._columnWidth,
-      spacer: 10
+      spacer: this._spacer
     };
   }
   _calculateColumnCount = width => {
@@ -121,10 +127,14 @@ class MyMasonry extends Component {
     // const {columnWidth, gutterSize} = this.props.config;
     // this._columnCount = Math.floor(width / (columnWidth + gutterSize));
 
-    this._columnCount = Math.floor(width / (this._columnWidth));
+    this._columnCount = Math.floor(width / (this._columnWidth + this._spacer));
+    // console.log(this._columnCount);
+  }
+  _calculateMarsonryWidth = () => {
+    return this._columnCount * (this._columnWidth + this._spacer) - this._spacer
   }
 
-  _renderAutoSizer = ({height, scrollTop}) => {
+  _renderAutoSizer = ({ height, scrollTop}) => {
     // console.log('_renderAutoSizer')
     this._height = height;
     this._scrollTop = scrollTop;
@@ -133,19 +143,17 @@ class MyMasonry extends Component {
       <AutoSizer 
         disableHeight
         height={height}
-        overscanByPixels={overscanByPixels}
-        scrollTop={this._scrollTop}
         onResize={this._onResize}
       >
         {({width}) => (
-          this._renderImageMeasurer(this.props.dataSet, width)
+          this._renderImageMeasurer(this.props.dataSet, this._sizeCheck(width), width)
         )}
       </AutoSizer>
     )
   }
 
-  _renderImageMeasurer = (items, width) => {
-    this._width = width;
+  _renderImageMeasurer = (items, width, fullWidth) => {
+    // this._width = width;
     // console.log('_renderImageMeasurer', this._width, width)
     return (<ImageMeasurer 
       items={items}
@@ -163,6 +171,7 @@ class MyMasonry extends Component {
       }}
       defaultHeight={this._defaultHeight}
       defaultWidth={this._defaultWidth}
+      style={{width: fullWidth + 'px'}}
     >
       {({itemsWithSizes}) => 
         this.MasonryComponent({itemsWithSizes, setRef: this.setMasonry, width})
@@ -194,7 +203,6 @@ class MyMasonry extends Component {
         }
       </WindowScroller>
     )
-    // console.log('render')
     return (
       <div>
         <button onClick={this.shorten}>Resize</button>

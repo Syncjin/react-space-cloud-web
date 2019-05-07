@@ -103,10 +103,11 @@ const ImageContainer = styled.div`
   
 `;
 const Wrapper = styled.div`
-  // height: 100%;
+  height: calc(100% - 20px);
   // background: black;
   overflow: hidden;
-  width: 100%;
+  width: calc(100% - 20px);
+  margin: 0 auto;
   position:relative;
   cursor: pointer;
   border-radius: 15px;
@@ -114,9 +115,9 @@ const Wrapper = styled.div`
   transition: boxshadow 0.5s;
   -webkit-transform: translate3d(0, 0, 0);
   -webkit-backface-visibility: hidden;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+  box-shadow: 0 5px 5px rgba(0,0,0,0.19), 0 5px 5px rgba(0,0,0,0.23);
   &:hover {
-    box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+    box-shadow: 0 9px 9px rgba(0,0,0,0.30), 0 12px 10px rgba(0,0,0,0.22);
   }
 
   &:hover ${ImageContainer} img {
@@ -124,6 +125,7 @@ const Wrapper = styled.div`
   }
   
 `;
+// 10 20 19 38  6 6 15 12
 
 // const Wrapper = styled.div`
 //   height: 100%;
@@ -178,13 +180,13 @@ class MasonryItem extends Component {
     const {likes, views, downloads, urls, alt_description, description, created_at} = item;
     const title = description !== null ? description : alt_description !== null ? alt_description : 'Untitled';
     return (
-      <Wrapper CellHeight={CellHeight} CellWidth={CellWidth}>
-        {/* <DateCard color={Color[this.dateReturn(created_at).month.toLowerCase()]}>
+      <Wrapper CellHeight={CellHeight} CellWidth={CellWidth} onClick={() => {console.log(item);}}>
+        <DateCard color={Color[this.dateReturn(created_at).month.toLowerCase()]}>
           <span className="day">{this.dateReturn(created_at).day}</span>
           <span className="month">{this.dateReturn(created_at).month}</span>
           <span className="year">{this.dateReturn(created_at).year}</span>
           <span>{num}</span>
-        </DateCard> */}
+        </DateCard>
         <ContentDiv ref={this.myGridItemContent}>
           <ImageContainer CellHeight={CellHeight} CellWidth={CellWidth}>
             <ImageBlackContainer>

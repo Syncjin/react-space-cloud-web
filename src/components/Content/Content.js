@@ -3,8 +3,8 @@ import styled, {css} from 'styled-components';
 import { device } from '../SizeCheck';
 import { BrowserRouter as Router , Route, Link} from 'react-router-dom';
 import SlideContainer from '../../containers/SlideContainer'
-import Page from './Page';
-import PageContainer from '../../containers/PageContainer';
+import MasonryPage from './MasonryPage';
+import MasonryPageContainer from '../../containers/MasonryPageContainer';
 
 const ContentWrapper = styled.div`
   display: block;
@@ -37,7 +37,7 @@ const Test = () => {
 }
 
 const Index = () => {
-  return <PageContainer />
+  return <MasonryPageContainer />
 }
 
 const Content = () => {
