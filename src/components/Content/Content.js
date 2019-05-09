@@ -1,9 +1,9 @@
 import React from 'react';
 import styled, {css} from 'styled-components';
 import { device } from '../SizeCheck';
-import { BrowserRouter as Router , Route, Link} from 'react-router-dom';
+import { BrowserRouter as Router , Route, Link } from 'react-router-dom';
 import SlideContainer from '../../containers/SlideContainer'
-import MasonryPage from './MasonryPage';
+import ScrollToTop from './ScrollToTop';
 import MasonryPageContainer from '../../containers/MasonryPageContainer';
 
 const ContentWrapper = styled.div`
@@ -33,7 +33,7 @@ const TestDiv = styled.div`
 `;
 
 const Test = () => {
-  return <SlideContainer />
+  return <div>test</div>
 }
 
 const Index = () => {

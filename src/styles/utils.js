@@ -1,6 +1,7 @@
 
 export const normal = '#333';
 export const blue = '#339af0';
+export const white = '#fff';
 export const ActBlue = '#334aaf';
 
 export const Color = {

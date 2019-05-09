@@ -3,8 +3,8 @@ import styled, {css} from 'styled-components';
 import * as Md from 'react-icons/md';
 
 const IconDiv = styled.div`
-  width: 64px;
-  height: 64px;
+  width: 50px;
+  height: 50px;
   cursor: pointer;
   display: inline-block;
   z-index: 20;

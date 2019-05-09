@@ -4,7 +4,7 @@ import axios from 'axios';
 export default function* rootSaga() {
   yield all([
   actionWatcher(),
-  watchAndLog()
+  // watchAndLog()
   ]);
 }
 
@@ -53,7 +53,6 @@ export function* getMasonryApi(action) {
 
 
 function* actionWatcher() {
-  console.log('??')
   yield takeLatest('test/GET_REQUESTED', getApi);
   yield takeLatest('slide/GET_REQUESTED', getSlideApi);
   yield takeLatest('masonry/GET_REQUESTED', getMasonryApi);

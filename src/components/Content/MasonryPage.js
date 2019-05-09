@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
 import styled, {css} from 'styled-components';
-import axios from 'axios';
+import { blue, normal, white, ActBlue } from '../../styles/utils';
 import { DominoSpinner } from 'react-spinners-kit';
 import MasonryContainer from '../../containers/MasonryContainer';
+import FloatingButton from './FloatingButton';
+
 
 const Wrapper = styled.div`
-  width: calc(100% - 10rem);
-  // height: 800px;
-  background: #f3f3f3;
+  width: 100%;
   margin: 50px auto;
 `;
 
@@ -25,11 +25,6 @@ const MoreBox = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-
-  button {
-    width: 100px;
-    height: 50px;
-  }
 `;
 
 const MasonryWrapper = styled.div`
@@ -39,63 +34,66 @@ const MasonryWrapper = styled.div`
   padding: 10px;
 `;
 
+const MoreButton = styled.div`
+  width: 300px;
+  height: 50px;
+  position: relative;
+  border-radius: 15px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid ${blue};
+  color: ${normal};
+  -webkit-transition: all 1s ease;
+	-moz-transition: all 1s ease;
+	-o-transition: all 1s ease;
+  transition: all 1s ease;
+  overflow: hidden;
+  
+  span {
+    z-index:1;
+    color: ${blue};
+  }
+
+  &: hover>span {
+    color: ${white};
+  }
+
+  &: hover:after {
+    
+    height: 450%;
+    border: 1px solid ${blue};
+    background: ${blue};
+  }
+  &: after {
+    content: "";
+    position: absolute;
+    height: 0%;
+    left: 50%;
+    top: 50%;
+    width: 150%;
+    z-index: 0;
+    -webkit-transition: all 0.75s ease 0s;
+    -moz-transition: all 0.75s ease 0s;
+    -o-transition: all 0.75s ease 0s;
+    transition: all 0.75s ease 0s;
+    -moz-transform: translateX(-50%) translateY(-50%) rotate(-25deg);
+    -ms-transform: translateX(-50%) translateY(-50%) rotate(-25deg);
+    -webkit-transform: translateX(-50%) translateY(-50%) rotate(-25deg);
+    transform: translateX(-50%) translateY(-50%) rotate(-25deg);
+  }
+`;
+
+
+
 class MasonryPage extends Component {
  
-  // state = {
-  //   loading: false,
-  //   responseList: [],
-  //   responseItemCnt: 0,
-  //   more: false
-  // }
 
   constructor(props){
     console.log('masornypage')
     super(props);
     this.scrollThrottling = null;
-  }
-
-  // shouldComponentUpdate(nextProps, nextState){
-  //   console.log('should');
-  //   console.log(nextProps, nextState);
-
-  //   if(!nextProps.loading){
-  //     return false;
-  //   }
-  //   return true;
-  // }
-
-  
-  getApi = async (text, updown) => {
-    console.log('log ' + text);
-    if(this.state.loading) return;
-    this.setState({loading: true});
-    try {
-      // let response = await axios.get('https://api.unsplash.com/photos/random?client_id=3e3e2a7b7de3858240006b98d9fcbe37671348d15e9844c421d4e66158325ac5&count=15');
-      let response = await axios.get('http://localhost:3001/api?count=15');
-      
-      let newResponse;
-      if(this.state.responseList.length > 25) {
-        this.state.responseList = this.state.responseList.slice(5, 50);
-        if(updown ==='next') {
-          newResponse = response.data.concat(this.state.responseList);
-        } else {
-          newResponse = this.state.responseList.concat(response.data);
-        }
-      } else {
-        if(updown ==='next') {
-          newResponse = response.data.concat(this.state.responseList);
-        } else {
-          newResponse = this.state.responseList.concat(response.data);
-        }
-      }
-
-      this.setState({ responseList: newResponse, loading: false, responseItemCnt: updown === 'prev' ? this.state.responseItemCnt - 5 : this.state.responseItemCnt + 5 });
-      console.log(this.state);
-      // console.log(response)
-    } catch (e) {
-      // console.log(e);
-      this.setState({loading: false});
-    }
   }
 
   componentDidMount(){
@@ -107,70 +105,63 @@ class MasonryPage extends Component {
     if(!this.scrollThrottling){
       this.scrollThrottling = setTimeout(() => {
         this.scrollThrottling = null;
-        console.log('thrott')
         let scrollTop = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
-    
         let scrollHeight = (document.documentElement && document.documentElement.scrollHeight) || document.body.scrollHeight;
-        
         let clientHeight = document.documentElement.clientHeight || window.innerHeight;
         let scrolledToBottom = Math.ceil(scrollTop + clientHeight) >= scrollHeight;
+        let scrolledToTop = scrollTop <= 200;
         
-        console.log(scrollTop, scrollHeight, clientHeight, scrolledToBottom);
-        if (scrolledToBottom && this.props.more && !this.props.loading) {
-          this.props.getRequested();
+        console.log(scrollTop, scrollHeight, clientHeight, scrolledToBottom, scrolledToTop);
+        const {floating, more, loading, floatingHide, floatingShow, getRequested } = this.props;
+        
+        if (scrolledToTop && floating && more) {
+          floatingHide();
+        } else if(!scrolledToTop && !floating && more){
+          floatingShow();
         }
-        
+
+        if (scrolledToBottom && more && !loading) {
+          getRequested();
+        }
+
       }, 250)
     }
-    
   }
 
-
-
-  // querySearchResult = () => {
-  //   if (this.state.requestSent) {
-  //     return;
-  //   }
-
-  //   // enumerate a slow query
-  //   setTimeout(this.getApi, 1000);
-
-  //   // this.setState({requestSent: true});
-  // }
-
   makeLoading = loading => {
-    console.log('make loading', loading)
     if(loading){
       return (
       <RequestLoading>
         <DominoSpinner
           size={300}
-          color="#0E3A53"
+          color={`${ActBlue}`}
           loading={loading}
         />
       </RequestLoading>);
     } else {
-      return null
+      return null;
     }
-
   }
 
+  _makeFloating = floating => {
+    // setTimeout(() => {
+      return <FloatingButton ani={floating}/>
+    // }, 1000);
+  }
 
   render() {
-    const { more, moreTrue, loading } = this.props;
+    const { more, moreTrue, loading, floating } = this.props;
     return (
       <Wrapper>
-        {/* <div style={{width: 300, height: 300, background: 'red'}} onClick={this.props.test}></div> */}
-        {/* <Grid data={responseList} num={this.state.responseItemCnt}/>
-        {more ? this.makeLoading() : (<MoreBox>
-          <button onClick={() => { this.setState({more: true}) }}>more</button>
-        </MoreBox>)} */}
         <MasonryWrapper>
           <MasonryContainer/>
         </MasonryWrapper>
-        {more ? this.makeLoading(loading) : (<MoreBox>
-          <button onClick={moreTrue}>more</button>
-        </MoreBox>)}
+        {loading ? this.makeLoading(loading) : null}
+        {more ? null : 
+          (<MoreBox>
+            <MoreButton onClick={moreTrue}><span>More</span></MoreButton>
+          </MoreBox>)}
+        {more ? this._makeFloating(floating) : null}
       </Wrapper>
     )
   }

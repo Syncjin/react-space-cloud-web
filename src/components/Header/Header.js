@@ -6,14 +6,14 @@ import Icon from './Icon';
 
 const HeaderWrapper = styled.div`
   background: ${blue};
-  height: 100px;
+  height: 80px;
   width: 100%;
   position: relative;
 `;
 
 const IconWrapper = styled.div`
-  width: 200px;
-  height: 100px;
+  width: 150px;
+  height: 80px;
   float: right;
   text-align: center;
 `;
@@ -36,7 +36,7 @@ const Header = ({ searchClick, menuClick }) => {
       <IconWrapper>
         <TableWrapper>
           <TableCellWrapper>
-            <Icon icon={'MdSearch'} onclick={(e) => {searchClick('search click')}}/>
+            <Icon icon={'MdSearch'} onclick={(e) => {searchClick('search click')}} />
             <Icon icon={'MdMenu'} onclick={(e) => {menuClick('menu click')}}/>
           </TableCellWrapper>
         </TableWrapper>

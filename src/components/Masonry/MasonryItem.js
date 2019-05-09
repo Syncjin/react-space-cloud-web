@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import styled, {css} from 'styled-components';
 import {Color, ellipse} from '../../styles/utils';
 import moment from 'moment';
+import {Motion, spring} from 'react-motion';
 import * as Md from 'react-icons/md';
 
 
@@ -112,7 +113,7 @@ const Wrapper = styled.div`
   cursor: pointer;
   border-radius: 15px;
   -webkit-border-radius: 15px;
-  transition: boxshadow 0.5s;
+  transition: all 0.5s;
   -webkit-transform: translate3d(0, 0, 0);
   -webkit-backface-visibility: hidden;
   box-shadow: 0 5px 5px rgba(0,0,0,0.19), 0 5px 5px rgba(0,0,0,0.23);
@@ -147,9 +148,10 @@ class MasonryItem extends Component {
  
   constructor(props){
     super(props);
+    this.state = {open: false}
   }
 
-  dateReturn = date => {
+  _dateReturn = date => {
     let d = new Date(date);
     const monthArray = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
     return {
@@ -159,7 +161,7 @@ class MasonryItem extends Component {
     }
   }
 
-  numReturn = (num, title) => {
+  _numReturn = (num, title) => {
     let data = Number(num);
     let result;
     if(data > 1000000){
@@ -173,6 +175,19 @@ class MasonryItem extends Component {
     return data;
   }
 
+  _animationCalculator = flag => {
+    // const xSimbol = Math.floor(Math.random() * 2) + 1;
+    // const ySimbol = Math.floor(Math.random() * 2) + 1;
+    // const x = xSimbol == 1 ? Math.floor(Math.random() * 100) + 1 : (Math.floor(Math.random() * 100) + 1) * (-1);
+    // const y = ySimbol == 1 ? Math.floor(Math.random() * 100) + 1 : (Math.floor(Math.random() * 100) + 1) * (-1);
+    
+    let result;
+
+    result = !flag ? {x:spring(0),y: spring(0)}: {x: spring(1), y: spring(1)}
+    return result;
+
+  }
+  
   render() {
     // const {src, onclick, alt, date, title, like, view, download } = this.props;
     const {CellHeight, CellWidth, item, num} = this.props;
@@ -180,42 +195,57 @@ class MasonryItem extends Component {
     const {likes, views, downloads, urls, alt_description, description, created_at} = item;
     const title = description !== null ? description : alt_description !== null ? alt_description : 'Untitled';
     return (
-      <Wrapper CellHeight={CellHeight} CellWidth={CellWidth} onClick={() => {console.log(item);}}>
-        <DateCard color={Color[this.dateReturn(created_at).month.toLowerCase()]}>
-          <span className="day">{this.dateReturn(created_at).day}</span>
-          <span className="month">{this.dateReturn(created_at).month}</span>
-          <span className="year">{this.dateReturn(created_at).year}</span>
-          <span>{num}</span>
-        </DateCard>
-        <ContentDiv ref={this.myGridItemContent}>
-          <ImageContainer CellHeight={CellHeight} CellWidth={CellWidth}>
-            <ImageBlackContainer>
-              <IconInfo>
-                <Md.MdFavoriteBorder />
-                <span>{this.numReturn(likes, 'like')}</span>
-              </IconInfo>
-              <IconInfo>
-                <Md.MdRemoveRedEye />
-                <span>{this.numReturn(views, 'view')}</span>
-              </IconInfo>
-              <IconInfo>
-                <Md.MdArrowDownward />
-                <span>{this.numReturn(downloads, 'download')}</span>
-              </IconInfo>
-            </ImageBlackContainer>
-            <img src={urls.small} onClick={onclick} alt={alt_description} 
-            // onLoad={() => {this.setState({imageStatus: 'loaded'}, () => this.getBound())}}
-            />
-          </ImageContainer>
-          <InfoCard>
-            <div className="content">
-              <h3 className="title">{title}</h3>
-            </div>
-          </InfoCard>
-        </ContentDiv>
-      </Wrapper>
+      // <Motion style={this._animationCalculator(this.state.open)}>
+      //   {({x, y}) => 
+      //     <div style={{
+      //       // WebkitTransform:`translate3d(${x}px,${y}px,0)`, 
+      //       height: '100%',
+      //       opacity: `${x}`
+      //       }}
+      //       >
+          <Wrapper CellHeight={CellHeight} CellWidth={CellWidth} onClick={() => {console.log(item);}}>
+            <DateCard color={Color[this._dateReturn(created_at).month.toLowerCase()]}>
+              <span className="day">{this._dateReturn(created_at).day}</span>
+              <span className="month">{this._dateReturn(created_at).month}</span>
+              <span className="year">{this._dateReturn(created_at).year}</span>
+              <span>{num}</span>
+            </DateCard>
+            <ContentDiv ref={this.myGridItemContent}>
+              <ImageContainer CellHeight={CellHeight} CellWidth={CellWidth}>
+                <ImageBlackContainer>
+                  <IconInfo>
+                    <Md.MdFavoriteBorder />
+                    <span>{this._numReturn(likes, 'like')}</span>
+                  </IconInfo>
+                  <IconInfo>
+                    <Md.MdRemoveRedEye />
+                    <span>{this._numReturn(views, 'view')}</span>
+                  </IconInfo>
+                  <IconInfo>
+                    <Md.MdArrowDownward />
+                    <span>{this._numReturn(downloads, 'download')}</span>
+                  </IconInfo>
+                </ImageBlackContainer>
+                <img src={urls.small} onClick={onclick} alt={alt_description} 
+                // onLoad={() => {this.setState({imageStatus: 'loaded'}, () => this.getBound())}}
+                />
+              </ImageContainer>
+              <InfoCard>
+                <div className="content">
+                  <h3 className="title">{title}</h3>
+                </div>
+              </InfoCard>
+            </ContentDiv>
+          </Wrapper>
+      //     </div>
+      //   }
+      // </Motion>
     )
   }
+
+  // componentDidMount(){
+  //   this.setState({open: true}, () => console.log('??'))
+  // }
 
 }
 

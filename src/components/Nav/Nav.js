@@ -8,7 +8,7 @@ import NavList from './NavList';
 const NavWrapper = styled.div`
   display: block;
   width: 100%;
-  height: 100px;
+  height: 80px;
   background: ${blue};
   position: relative;
   top: 0px;

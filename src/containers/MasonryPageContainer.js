@@ -15,13 +15,30 @@ class MasonryPageContainer extends Component {
   moreTrue = () => {
     MasonryPageActions.moreTrue();
     MasonryActions.getRequested();
+    MasonryPageActions.floatingShow();
+  }
+
+  floatingShow = () => {
+    MasonryPageActions.floatingShow();
+  }
+
+  floatingHide = () => {
+    MasonryPageActions.floatingHide();
+  }
+
+  shouldComponentUpdate(nP, nS) {
+    console.log('page should//////')
+    console.log(nP, this.props);
+    console.log(nS, this.state);
+    return true;
   }
   
   render() {
     console.log('page container', this.props)
-    const { more, loading } = this.props;
+    const { more, loading, floating } = this.props;
     return (
-      <MasonryPage getRequested={this.getRequested} more={more} moreTrue={this.moreTrue} loading={loading}/>
+      <MasonryPage getRequested={this.getRequested} more={more} moreTrue={this.moreTrue} loading={loading} floatingShow={this.floatingShow} floatingHide={this.floatingHide} floating={floating}
+      />
       
     )
   }
@@ -29,15 +46,8 @@ class MasonryPageContainer extends Component {
 
 export default connect(
   ({masonryPage, masonry}) => ({
-    // dataSet: masonry.dataSet,
-    // config: masonry.config
-    // input: todo.get('input'),
-    // todos: todo.get('todos')
-
-    // Record를 이용할 때
-    // input: todo.input,
-    // todos: todo.todos
     more: masonryPage.more,
+    floating: masonryPage.floating,
     loading: masonry.config.loading
   }),
   (dispatch) => ({

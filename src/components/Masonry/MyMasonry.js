@@ -79,17 +79,12 @@ class MyMasonry extends Component {
     );
   }
 
-  shorten = () => {
-    // console.log('shorten', this.props.dataSet)
-    this._cache.clearAll();
-    this._cellPositioner.reset(this._cellPositionerConfig);
-    this.masonryRef.clearCellPositions();
-    this.props.getRequested();
-  }
-
-  componentDidUpdate(){
-    console.log('update', this.props.dataSet)
-  }
+  // shorten = () => {
+  //   this._cache.clearAll();
+  //   this._cellPositioner.reset(this._cellPositionerConfig);
+  //   this.masonryRef.clearCellPositions();
+  //   this.props.getRequested();
+  // }
 
   setMasonry = node => (this.masonryRef = node);
 
@@ -205,7 +200,6 @@ class MyMasonry extends Component {
     )
     return (
       <div>
-        <button onClick={this.shorten}>Resize</button>
         {child}
       </div>
     )
