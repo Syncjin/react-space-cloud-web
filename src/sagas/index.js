@@ -8,17 +8,6 @@ export default function* rootSaga() {
   ]);
 }
 
-export function* getApi() {
-  console.log('saga getapi')
-  try {
-    const { data } = yield axios.get('http://localhost:3001/api')
-    yield put({type: 'test/GET_SUCCEEDED', payload: data})
-  } catch (error) {
-    console.log('err', error)
-    yield put({type: 'test/GET_FAILED', payload: error.message})
-  }
-}
-
 export function* getSlideApi() {
   console.log('saga slide get api');
   try {
@@ -56,7 +45,6 @@ export function* getCatInfoApi(action) {
 
 
 function* actionWatcher() {
-  // yield takeLatest('test/GET_REQUESTED', getApi);
   yield takeLatest('slide/GET_REQUESTED', getSlideApi);
   yield takeLatest('masonry/GET_REQUESTED', getMasonryApi);
   yield takeLatest('catInfo/GET_REQUESTED', getCatInfoApi);

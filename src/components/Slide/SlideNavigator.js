@@ -3,7 +3,6 @@ import styled, {css} from 'styled-components';
 import Icon from './Icon';
 import * as Md from 'react-icons/md';
 
-
 const IconWrapper = styled.div`
   width: 100px;
   height: 100%;

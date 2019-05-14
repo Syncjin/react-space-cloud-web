@@ -24,7 +24,6 @@ class CatInfoContainer extends Component {
 
 export default connect(
   ({catInfo}) => ({
-    // dataSet: catInfo.dataSet,
     imageData: catInfo.imageData,
     loading: catInfo.loading,
     

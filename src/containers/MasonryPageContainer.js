@@ -14,9 +14,7 @@ class MasonryPageContainer extends Component {
 
   moreTrue = () => {
     MasonryPageActions.moreTrue();
-    // MasonryActions.getRequested(masonryNum);
     this.getRequested(this.props.requestedNum)
-    // console.log('this.props.requstedNum', this.props.requestedNum)
     MasonryPageActions.floatingShow();
   }
 
@@ -28,12 +26,6 @@ class MasonryPageContainer extends Component {
     MasonryPageActions.floatingHide();
   }
 
-  // shouldComponentUpdate(nP, nS) {
-  //   console.log('page should//////')
-  //   console.log(nP, this.props);
-  //   console.log(nS, this.state);
-  //   return true;
-  // }
   
   render() {
     // console.log('page container', this.props)

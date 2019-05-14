@@ -214,6 +214,9 @@ class MasonryItem extends Component {
   
   _animateFlag = () => {
     const { itemLength, num } = this.props;
+    if(itemLength <= 5) {
+      return false
+    }
     let animated = (itemLength - num) <= 5;
     return animated;
   }
@@ -226,8 +229,11 @@ class MasonryItem extends Component {
       this.setState({
         open: true,
       })
-    } 
-    
+    } else {
+      this.setState({
+        loaded: true,
+      })
+    }
   }
 
 
@@ -278,11 +284,9 @@ class MasonryItem extends Component {
                 {!loaded && <LazyPreImage src={urls.preLoad} onClick={onclick} alt={alt_description} loaded={loaded}/>}
                 <LazyImage src={urls.small} onClick={onclick} alt={alt_description} loaded={loaded}
                 onLoad={() => {
-                    // setTimeout(() => {
-                      this.setState({
-                        loaded: true
-                      })
-                    // }, 500);
+                  this.setState({
+                    loaded: true
+                  })
                 }}
                 />
               </ImageContainer>

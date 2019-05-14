@@ -3,37 +3,36 @@ import styled, {css} from 'styled-components';
 import { device } from '../SizeCheck';
 
 const View = styled.ul`
-width: 100%;
-height: 100%;
-// background: red;
-list-style-type: none;
-margin: 0;
-padding: 0;
-position: relative;
-overflow: hidden;
+  width: 100%;
+  height: 100%;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
 `;
 
 const Item = styled.li`
-width: 100%;
-height: 100%;
-// background: yellow;
-float: left;
-display: flex;
-align-items: center;
-justify-content: center;
-position: absolute;
-img {
-  width: auto;
-  max-width: 100%;
-  max-height: 100%;
-  cursor: pointer;
-}
-iframe {
-  background: black;
   width: 100%;
   height: 100%;
-}
-transition: all 0.5s;
+  // background: yellow;
+  float: left;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  img {
+    width: auto;
+    max-width: 100%;
+    max-height: 100%;
+    cursor: pointer;
+  }
+  iframe {
+    background: black;
+    width: 100%;
+    height: 100%;
+  }
+  transition: all 0.5s;
 ${props => css`
   transform: translateX(${props.transWidth}px);
 `}

@@ -25,7 +25,6 @@ export default handleActions({
     };
   },
   [PRINT_MESSAGE]: (state) => {
-    // console.log('message! ', state.message)
     window.alert('message! :' + state.message)
     return state
   }

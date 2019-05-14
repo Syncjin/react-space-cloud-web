@@ -43,10 +43,6 @@ class SlideContainer extends Component {
     SlideActions.getRequested();
   }
 
-  componentDidMount() {
-
-  }
-
   render() {
     const { autoNext, handleNext, handlePrev, getApi, autoNextClear } = this;
     const { config } = this.props;

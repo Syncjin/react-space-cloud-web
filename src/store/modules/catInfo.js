@@ -13,7 +13,6 @@ const initialState = {
 
 export default handleActions({
   [GET_REQUESTED]: (state, action) => {
-    console.log('?',action)
     return {
       ...state,
       loading: true,

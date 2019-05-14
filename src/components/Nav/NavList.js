@@ -76,7 +76,6 @@ class NavList extends Component {
             <Item key={i}>
               {i === 3 ? 
                 (<LinkA to="/newLink" active={o.active ? 1 : 0}>{o.text}</LinkA>) : 
-                // (<A active={o.active ? 1 : 0} onClick={(e) => {this.renderMain(i)}}>{o.text}</A>)
                 (<A active={o.active ? 1 : 0} onClick={(e) => {hoverTrue(i)}}>{o.text}</A>)
               }
               

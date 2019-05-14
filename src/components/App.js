@@ -4,6 +4,7 @@ import Content from './Content';
 import { BrowserRouter as Router , Route, Link} from 'react-router-dom';
 import styled, {css} from 'styled-components';
 import NavContainer from '../containers/NavContainer';
+
 const Wrapper = styled.div`
   position: fixed;
   width: 100%;
@@ -11,11 +12,8 @@ const Wrapper = styled.div`
   top: 0;
 `;
 
-
 class App extends Component {
   
-
-
   render() {
     return (
       <div className="App">
