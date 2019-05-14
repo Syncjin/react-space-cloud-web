@@ -1,24 +1,28 @@
 import React, {Component} from 'react';
 import styled, {css} from 'styled-components';
-import { Motion, spring } from 'react-motion';
 import * as Md from 'react-icons/md';
 import { blue, normal, white, ActBlue, gray } from '../../styles/utils';
-import Faker from 'faker'
 import { DominoSpinner } from 'react-spinners-kit';
-import axios from 'axios'
 
 const Wrapper = styled.div`
-  width: 500px;
-  height: 500px;
+  text-align: center;
+  min-width: 300px;
+  min-height: 300px;
+`;
+
+const WrapperCenter = styled.div`
+  padding: 20px;
   background: #fff;
   margin: 32px auto;
   border-radius: 8px;
   box-shadow: rgb(238, 238, 238) 0px 4px 4px;
   position: relative;
+  overflow: hidden;
+  display: inline-block;
 `;
 
 const ActionBar = styled.div`
-  width: 100%;
+  // width: 100%;
   height: 80px;
   position: relative;
 `;
@@ -56,8 +60,13 @@ const ActionRightMenu = styled.div`
 
 const Content = styled.div`
   position: relative;
+  display:block;
+  min-width: 300px;
+  min-height: 200px;
+  max-width: 700px;
   img {
     width: 100%; height: 100%;
+    
   }
 `;
 
@@ -117,16 +126,18 @@ class CatInfo extends Component {
     console.log('loading', loading)
     return (
       <Wrapper>
-        <ActionBar>
-          <ActionMenu>
-            <Md.MdMoreHoriz />
-          </ActionMenu>
-          {/* <ActionRightMenu /> */}
-        </ActionBar>
-        {loading ? this._makeLoading(loading) : null}
-        <Content>
-          {loading ? null : <img src={imageData !== null ? imageData.urls.small : null} /> }
-        </Content>
+        <WrapperCenter>
+          <ActionBar>
+            <ActionMenu>
+              <Md.MdMoreHoriz />
+            </ActionMenu>
+            {/* <ActionRightMenu /> */}
+          </ActionBar>
+          {loading ? this._makeLoading(loading) : null}
+          <Content>
+            {loading ? null : <img src={imageData !== null ? imageData.urls.small : null} /> }
+          </Content>
+        </WrapperCenter>
       </Wrapper>
     )
   }
