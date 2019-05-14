@@ -24,7 +24,7 @@
     "tape": "^4.10.1"
   },
   "scripts": {
-    "start": "PORT=8080 react-scripts start",
+    "start": "PORT=5001 react-scripts start",
     "build": "react-scripts build",
     "test": "tape sagas/sagas.spec.js",
     "eject": "react-scripts eject"
