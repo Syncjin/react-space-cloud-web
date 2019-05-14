@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import styled, {css} from 'styled-components';
 import {Color, ellipse} from '../../styles/utils';
-import moment from 'moment';
+import {Link} from 'react-router-dom';
 import {Motion, spring} from 'react-motion';
 import * as Md from 'react-icons/md';
 
@@ -79,8 +79,6 @@ const IconInfo = styled.div`
 `;
 
 const ImageContainer = styled.div`
-  // width: 100%;
-  // height: auto;
   ${props => props.CellWidth && 
     css`width: ${props.CellWidth}px;`
   }
@@ -95,14 +93,10 @@ const ImageContainer = styled.div`
   &:hover ${IconInfo} {
     display: flex;
   }
-  img {
-    width: 100%;
-    height: auto;
-    display: block;
-    transition: all 0.3s;
-  }
+  
   
 `;
+
 const Wrapper = styled.div`
   height: calc(100% - 20px);
   // background: black;
@@ -113,8 +107,6 @@ const Wrapper = styled.div`
   cursor: pointer;
   border-radius: 15px;
   -webkit-border-radius: 15px;
-  transition: all 0.5s;
-  -webkit-transform: translate3d(0, 0, 0);
   -webkit-backface-visibility: hidden;
   box-shadow: 0 5px 5px rgba(0,0,0,0.19), 0 5px 5px rgba(0,0,0,0.23);
   &:hover {
@@ -126,29 +118,58 @@ const Wrapper = styled.div`
   }
   
 `;
-// 10 20 19 38  6 6 15 12
 
-// const Wrapper = styled.div`
-//   height: 100%;
-//   widht: 100%;
-//   ${props => props.CellWidth && 
-//     css`width: ${props.CellWidth};`
-//   }
-//   ${props => props.CellHeight && 
-//     css`height: ${props.CellHeight};`
-//   }
-//   display:block;
-// `;
 const ContentDiv = styled.div`
   display: block;
   position:relative;
 `;
 
+const LazyPreImage = styled.img`
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: all 0.5s;
+  -webkit-filter: blur(5px);
+    filter: blur(5px);
+  ${props => props.loaded &&
+    css`
+    -webkit-filter: blur(0px);
+    filter: blur(0px);
+    position: absolute;
+    `
+  }
+`;
+
+const LazyImage = styled.img`
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: all 0.5s;
+  position: absolute;
+  -webkit-filter: blur(5px);
+    filter: blur(5px);
+  ${props => props.loaded &&
+    css`
+    position: relative;
+    -webkit-filter: blur(0px);
+    filter: blur(0px);
+    `
+  }
+`;
+
+const LinkA = styled(Link)`
+  text-decoration: none;
+`;
+
+
 class MasonryItem extends Component {
  
   constructor(props){
     super(props);
-    this.state = {open: false}
+    this.state = {
+      open: false,
+      loaded: false,
+    }
   }
 
   _dateReturn = date => {
@@ -161,7 +182,7 @@ class MasonryItem extends Component {
     }
   }
 
-  _numReturn = (num, title) => {
+  _numReturn = num => {
     let data = Number(num);
     let result;
     if(data > 1000000){
@@ -175,42 +196,70 @@ class MasonryItem extends Component {
     return data;
   }
 
-  _animationCalculator = flag => {
-    // const xSimbol = Math.floor(Math.random() * 2) + 1;
-    // const ySimbol = Math.floor(Math.random() * 2) + 1;
-    // const x = xSimbol == 1 ? Math.floor(Math.random() * 100) + 1 : (Math.floor(Math.random() * 100) + 1) * (-1);
-    // const y = ySimbol == 1 ? Math.floor(Math.random() * 100) + 1 : (Math.floor(Math.random() * 100) + 1) * (-1);
+
+  _transInterpolation = flag => {
+    if(!this._animateFlag()){
+      return 0;
+    }
+
+    const xSimbol = Math.floor(Math.random() * 2) + 1;
+    const x = xSimbol == 1 ? Math.floor(Math.random() * 300) + 1 : (Math.floor(Math.random() * 300) + 1) * (-1);
     
     let result;
 
-    result = !flag ? {x:spring(0),y: spring(0)}: {x: spring(1), y: spring(1)}
+    result = flag ? 0 : x;
     return result;
-
   }
+
   
+  _animateFlag = () => {
+    const { itemLength, num } = this.props;
+    let animated = (itemLength - num) <= 5;
+    return animated;
+  }
+
+
+
+  componentDidMount(){
+
+    if(this._animateFlag()){
+      this.setState({
+        open: true,
+      })
+    } 
+    
+  }
+
+
+
   render() {
-    // const {src, onclick, alt, date, title, like, view, download } = this.props;
     const {CellHeight, CellWidth, item, num} = this.props;
-    // console.log(CellHeight)
     const {likes, views, downloads, urls, alt_description, description, created_at} = item;
     const title = description !== null ? description : alt_description !== null ? alt_description : 'Untitled';
+    const {loaded} = this.state;
+
     return (
-      // <Motion style={this._animationCalculator(this.state.open)}>
-      //   {({x, y}) => 
-      //     <div style={{
-      //       // WebkitTransform:`translate3d(${x}px,${y}px,0)`, 
-      //       height: '100%',
-      //       opacity: `${x}`
-      //       }}
-      //       >
-          <Wrapper CellHeight={CellHeight} CellWidth={CellWidth} onClick={() => {console.log(item);}}>
+      <Motion style={{
+          transX: spring(this._transInterpolation(this.state.open), {
+            stiffness: 170, damping: 50
+          }),
+          transY: spring(this._transInterpolation(this.state.open), {
+            stiffness: 170, damping: 50
+          })
+        }}>
+        {({transX, transY}) => 
+          <LinkA to={`/cat/${item.key}`}>
+          <Wrapper CellHeight={CellHeight} CellWidth={CellWidth} style={{
+            WebkitTransform: `translate3d(${transX}px, ${transY}px, 0)`,
+            transform: `translate3d(${transX}px, ${transY}px, 0)`,
+          }}>
             <DateCard color={Color[this._dateReturn(created_at).month.toLowerCase()]}>
               <span className="day">{this._dateReturn(created_at).day}</span>
               <span className="month">{this._dateReturn(created_at).month}</span>
               <span className="year">{this._dateReturn(created_at).year}</span>
               <span>{num}</span>
             </DateCard>
-            <ContentDiv ref={this.myGridItemContent}>
+            <ContentDiv>
               <ImageContainer CellHeight={CellHeight} CellWidth={CellWidth}>
                 <ImageBlackContainer>
                   <IconInfo>
@@ -226,8 +275,15 @@ class MasonryItem extends Component {
                     <span>{this._numReturn(downloads, 'download')}</span>
                   </IconInfo>
                 </ImageBlackContainer>
-                <img src={urls.small} onClick={onclick} alt={alt_description} 
-                // onLoad={() => {this.setState({imageStatus: 'loaded'}, () => this.getBound())}}
+                {!loaded && <LazyPreImage src={urls.preLoad} onClick={onclick} alt={alt_description} loaded={loaded}/>}
+                <LazyImage src={urls.small} onClick={onclick} alt={alt_description} loaded={loaded}
+                onLoad={() => {
+                    // setTimeout(() => {
+                      this.setState({
+                        loaded: true
+                      })
+                    // }, 500);
+                }}
                 />
               </ImageContainer>
               <InfoCard>
@@ -237,15 +293,13 @@ class MasonryItem extends Component {
               </InfoCard>
             </ContentDiv>
           </Wrapper>
-      //     </div>
-      //   }
-      // </Motion>
+          </LinkA>
+        }
+      </Motion>
     )
   }
 
-  // componentDidMount(){
-  //   this.setState({open: true}, () => console.log('??'))
-  // }
+  
 
 }
 

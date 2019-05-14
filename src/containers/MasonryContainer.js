@@ -5,18 +5,20 @@ import { bindActionCreators } from 'redux';
 import * as masonryActions from '../store/modules/masonry';
 import { MasonryActions } from '../store/actionCreators';
 
+// let num = 0;
+
 class MasonryContainer extends Component {
   
-  getRequested = () => {
-    MasonryActions.getRequested();
-  }
+  // getRequested = num => {
+  //   MasonryActions.getRequested(num);
+  // }
 
   render() {
-    console.log('masonryContainer', this.props)
+    // console.log('masonryContainer', this.props)
     const { dataSet, config } = this.props;
     return (
       <MyMasonry dataSet={dataSet} config={config}
-        getRequested={this.getRequested}
+        // getRequested={this.getRequested}
       />
       
     )

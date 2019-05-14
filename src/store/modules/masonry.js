@@ -14,8 +14,9 @@ const initialState = {
     gutterSize: 10, 
     overscanByPixels: 0,
     windowScrollerEnabled: false,
-    loading: false
-  }
+    loading: false,
+  },
+  requestedNum: 0
 };
 
 export default handleActions({
@@ -35,7 +36,8 @@ export default handleActions({
       config: {
         ...state.config,
         loading: false
-      }
+      },
+      requestedNum: state.requestedNum + 1
     }
   },
   [GET_FAILED]: (state, action) => {

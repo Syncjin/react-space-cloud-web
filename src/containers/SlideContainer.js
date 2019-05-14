@@ -24,7 +24,7 @@ class SlideContainer extends Component {
   }
 
   handleNext = () => {
-    console.log('handle next')
+    // console.log('handle next')
     const {level, responseCnt } = this.props.config;
     if(level !== responseCnt - 1) {
       SlideActions.handleNext();
@@ -32,7 +32,7 @@ class SlideContainer extends Component {
   }
 
   handlePrev = () => {
-    console.log('handle prev')
+    // console.log('handle prev')
     const {level } = this.props.config;
     if(level !== 0) {
       SlideActions.handlePrev();
@@ -59,17 +59,6 @@ class SlideContainer extends Component {
 export default connect(
   ({slide}) => ({
     config: slide.config
-    // imageList: slide.imageList,
-    // responseList: slide.responseList,
-    // responseCnt: slide.responseCnt,
-    // loading: slide.loading,
-    // maxDate: slide.maxDate,
-    // date: slide.date,
-    // url: slide.url,
-    // mediaType: slide.mediaType,
-    // level: slide.level,
-    // auto: slide.auto,
-    // setAuto: slide.setAuto,
   }),
   (dispatch) => ({
     SlideActions: bindActionCreators(slideActions, dispatch)

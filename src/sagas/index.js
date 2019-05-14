@@ -4,16 +4,10 @@ import axios from 'axios';
 export default function* rootSaga() {
   yield all([
   actionWatcher(),
-  // watchAndLog()
+  watchAndLog()
   ]);
 }
 
-// function* fetchNews() {
-//   const json = yield fetch('https://newsapi.org/v1/articles? 
-//         source= cnn&apiKey=c39a26d9c12f48dba2a5c00e35684ecc')
-//         .then(response => response.json(), );    
-//   yield put({ type: "NEWS_RECEIVED", json: json.articles, });
-// }
 export function* getApi() {
   console.log('saga getapi')
   try {
@@ -28,9 +22,7 @@ export function* getApi() {
 export function* getSlideApi() {
   console.log('saga slide get api');
   try {
-    const { data } = yield axios.get('http://localhost:3001/api?count=5')
-    // const { data } = yield axios.get('https://api.unsplash.com/photos/random?client_id=3e3e2a7b7de3858240006b98d9fcbe37671348d15e9844c421d4e66158325ac5&count=5');
-    console.log(data)
+    const { data } = yield axios.get('http://localhost:3000/api/card?count=5')
     yield put({type: 'slide/GET_SUCCEEDED', payload: data})
   } catch (error) {
     console.log('err', error)
@@ -38,12 +30,12 @@ export function* getSlideApi() {
   }
 }
 
-let i = 0;
 
 export function* getMasonryApi(action) {
-  console.log('saga masonry get api', action, i++);
+  console.log('saga masonry get api', action);
   try {
-    const { data } = yield axios.get('http://localhost:3001/api?count=5&page=' + i)
+    const { data } = yield axios.get(`http://localhost:3000/api/card?count=5&page=${action.payload}`)
+    console.log('data?', data, `http://localhost:3000/api/card?count=5&page=${action.payload}`)
     yield put({type: 'masonry/GET_SUCCEEDED', payload: data})
   } catch (error) {
     console.log('err', error)
@@ -51,11 +43,23 @@ export function* getMasonryApi(action) {
   }
 }
 
+export function* getCatInfoApi(action) {
+  console.log('saga catInfo get api', action);
+  try {
+    const { data } = yield axios.get(`http://localhost:3000/api/card?id=${action.payload}`)
+    yield put({type: 'catInfo/GET_SUCCEEDED', payload: data})
+  } catch (error) {
+    console.log('err', error)
+    yield put({type: 'catInfo/GET_FAILED', payload: error.message})
+  }
+}
+
 
 function* actionWatcher() {
-  yield takeLatest('test/GET_REQUESTED', getApi);
+  // yield takeLatest('test/GET_REQUESTED', getApi);
   yield takeLatest('slide/GET_REQUESTED', getSlideApi);
   yield takeLatest('masonry/GET_REQUESTED', getMasonryApi);
+  yield takeLatest('catInfo/GET_REQUESTED', getCatInfoApi);
 }
 
 function* watchAndLog() {

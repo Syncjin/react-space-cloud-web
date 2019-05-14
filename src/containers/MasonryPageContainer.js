@@ -8,13 +8,15 @@ import { MasonryActions, MasonryPageActions } from '../store/actionCreators';
 
 class MasonryPageContainer extends Component {
   
-  getRequested = () => {
-    MasonryActions.getRequested();
+  getRequested = masonryNum => {
+    MasonryActions.getRequested(masonryNum);
   }
 
   moreTrue = () => {
     MasonryPageActions.moreTrue();
-    MasonryActions.getRequested();
+    // MasonryActions.getRequested(masonryNum);
+    this.getRequested(this.props.requestedNum)
+    // console.log('this.props.requstedNum', this.props.requestedNum)
     MasonryPageActions.floatingShow();
   }
 
@@ -26,18 +28,19 @@ class MasonryPageContainer extends Component {
     MasonryPageActions.floatingHide();
   }
 
-  shouldComponentUpdate(nP, nS) {
-    console.log('page should//////')
-    console.log(nP, this.props);
-    console.log(nS, this.state);
-    return true;
-  }
+  // shouldComponentUpdate(nP, nS) {
+  //   console.log('page should//////')
+  //   console.log(nP, this.props);
+  //   console.log(nS, this.state);
+  //   return true;
+  // }
   
   render() {
-    console.log('page container', this.props)
-    const { more, loading, floating } = this.props;
+    // console.log('page container', this.props)
+    const { more, loading, floating, requestedNum } = this.props;
     return (
-      <MasonryPage getRequested={this.getRequested} more={more} moreTrue={this.moreTrue} loading={loading} floatingShow={this.floatingShow} floatingHide={this.floatingHide} floating={floating}
+      <MasonryPage 
+        getRequested={this.getRequested} more={more} moreTrue={this.moreTrue} loading={loading} floatingShow={this.floatingShow} floatingHide={this.floatingHide} floating={floating} requestedNum={requestedNum}
       />
       
     )
@@ -48,7 +51,8 @@ export default connect(
   ({masonryPage, masonry}) => ({
     more: masonryPage.more,
     floating: masonryPage.floating,
-    loading: masonry.config.loading
+    loading: masonry.config.loading,
+    requestedNum: masonry.requestedNum
   }),
   (dispatch) => ({
     MasonryActions: bindActionCreators(masonryActions, dispatch),

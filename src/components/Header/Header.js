@@ -45,26 +45,4 @@ const Header = ({ searchClick, menuClick }) => {
   )
 }
 
-// class Header extends Component {
-//   searchClick = () => {
-//     this.props.searchClick();
-//   }
-//   render(){
-//     const { searchClick, menuClick } = this.props
-//     return (
-//       <HeaderWrapper>
-//         <Logo />
-//         <IconWrapper>
-//           <TableWrapper>
-//             <TableCellWrapper>
-//               <Icon icon={'MdSearch'} onclick={searchClick}/>
-//               <Icon icon={'MdMenu'} onclick={menuClick}/>
-//             </TableCellWrapper>
-//           </TableWrapper>
-//         </IconWrapper>
-//       </HeaderWrapper>
-//     )
-//   }
-// }
-
 export default Header;

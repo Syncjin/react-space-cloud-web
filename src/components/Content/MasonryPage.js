@@ -39,6 +39,7 @@ const MoreButton = styled.div`
   height: 50px;
   position: relative;
   border-radius: 15px;
+  background: #fff;
   cursor: pointer;
   display: flex;
   justify-content: center;
@@ -91,14 +92,19 @@ class MasonryPage extends Component {
  
 
   constructor(props){
-    console.log('masornypage')
+    // console.log('masornypage')
     super(props);
     this.scrollThrottling = null;
   }
 
   componentDidMount(){
-    window.addEventListener('scroll', this.handleOnScroll);
-    this.props.getRequested();
+    window.addEventListener('scroll', this.handleOnScroll, false);
+    this.props.getRequested(this.props.requestedNum);
+  };
+
+  componentWillUnmount(){
+    clearTimeout(this.scrollThrottling);
+    window.removeEventListener('scroll', this.handleOnScroll, false);
   };
 
   handleOnScroll = () => {
@@ -111,8 +117,8 @@ class MasonryPage extends Component {
         let scrolledToBottom = Math.ceil(scrollTop + clientHeight) >= scrollHeight;
         let scrolledToTop = scrollTop <= 200;
         
-        console.log(scrollTop, scrollHeight, clientHeight, scrolledToBottom, scrolledToTop);
-        const {floating, more, loading, floatingHide, floatingShow, getRequested } = this.props;
+        // console.log(scrollTop, scrollHeight, clientHeight, scrolledToBottom, scrolledToTop);
+        const {floating, more, loading, floatingHide, floatingShow, getRequested, requestedNum } = this.props;
         
         if (scrolledToTop && floating && more) {
           floatingHide();
@@ -121,14 +127,14 @@ class MasonryPage extends Component {
         }
 
         if (scrolledToBottom && more && !loading) {
-          getRequested();
+          getRequested(requestedNum);
         }
 
       }, 250)
     }
   }
 
-  makeLoading = loading => {
+  _makeLoading = loading => {
     if(loading){
       return (
       <RequestLoading>
@@ -144,9 +150,7 @@ class MasonryPage extends Component {
   }
 
   _makeFloating = floating => {
-    // setTimeout(() => {
-      return <FloatingButton ani={floating}/>
-    // }, 1000);
+    return <FloatingButton ani={floating}/>
   }
 
   render() {
@@ -156,7 +160,7 @@ class MasonryPage extends Component {
         <MasonryWrapper>
           <MasonryContainer/>
         </MasonryWrapper>
-        {loading ? this.makeLoading(loading) : null}
+        {loading ? this._makeLoading(loading) : null}
         {more ? null : 
           (<MoreBox>
             <MoreButton onClick={moreTrue}><span>More</span></MoreButton>

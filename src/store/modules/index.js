@@ -5,7 +5,9 @@ import masonry from './masonry';
 import nav from './nav';
 import slide from './slide';
 import masonryPage from './masonryPage';
+import catInfo from './catInfo';
+
 
 export default combineReducers({
-  test, header, masonry, nav, slide, masonryPage
+  test, header, masonry, nav, slide, masonryPage, catInfo
 });

@@ -13,7 +13,7 @@ const Wrapper = styled.ul`
 `;
 
 const Item  = styled.li`
-  height: 100px;
+  height: 80px;
   // border: 1px solid black;
   display: inline-block;
   margin:0;
@@ -33,7 +33,7 @@ const A = styled.a`
   color: #FFFFF2;
   display: block;
   text-decoration:none;
-  line-height: 97px;
+  line-height: 77px;
   padding: 0 2rem;
   @media ${device.tablet} {
     padding: 0 2.5rem;
@@ -51,7 +51,7 @@ const LinkA = styled(Link)`
   color: #FFFFF2;
   display: block;
   text-decoration:none;
-  line-height: 97px;
+  line-height: 77px;
   padding: 0 2rem;
   @media ${device.tablet} {
     padding: 0 2.5rem;
